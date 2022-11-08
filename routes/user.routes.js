@@ -39,6 +39,15 @@ router.get('/studentrecord', async (req,res)=>{
     }
 });
 
+router.get('/allstudrecord', async (req,res)=>{
+    try {
+        const allRecord = await Student.find();
+        res.json({ status : 200 , message : 'Data Found...!' ? 'Data Not Found...!' : [] , data : allRecord ? allRecord : [] })
+    }  catch (error) {
+        res.json({ status : 200, error : error});
+    }
+})
+
 router.put('/editdata', async (req,res)=>{
     try {
         finalObj = {}
@@ -55,7 +64,7 @@ router.put('/editdata', async (req,res)=>{
 
         let editdata = await Student.updateOne({ _id : ObjectId(req.body._id)}, { $set : finalObj });
         //console.log('editdata ==>:', editdata);
-        
+
         if(editdata){
             res.json({ status : 200, message : 'Data updated successfully..!', data : editdata})
         }else{
